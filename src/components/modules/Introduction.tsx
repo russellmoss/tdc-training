@@ -14,11 +14,7 @@ const Introduction: React.FC = () => {
   return (
     <div className="module-content">
       <h2 className="module-title">{introduction.title}</h2>
-      <div className="module-description">
-        {introduction.content.split('\n\n').map((paragraph, index) => (
-          <p key={index} style={{ marginBottom: '15px' }}>{paragraph}</p>
-        ))}
-      </div>
+      
       <div className="intro-grid">
         <div className="intro-card">
           <FontAwesomeIcon icon={faWineGlass} className="intro-icon" />
