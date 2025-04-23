@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { introduction } from '../../data/modules';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,20 +11,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Introduction: React.FC = () => {
-  const [activeSection, setActiveSection] = useState(0);
-  const sections = introduction.content.split('\n\n');
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSection((prev) => (prev + 1) % sections.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [sections.length]);
-
   return (
     <div className="module-content">
       <h2 className="module-title">{introduction.title}</h2>
-      
+      <div className="module-description">
+        {introduction.content.split('\n\n').map((paragraph, index) => (
+          <p key={index} style={{ marginBottom: '15px' }}>{paragraph}</p>
+        ))}
+      </div>
       <div className="intro-grid">
         <div className="intro-card">
           <FontAwesomeIcon icon={faWineGlass} className="intro-icon" />
@@ -88,7 +82,7 @@ const Introduction: React.FC = () => {
 
       <div className="navigation-controls">
         <div></div>
-        <Link to="/module/module1.1" className="nav-button start-button">
+        <Link to="/module/module1.1" className="nav-button">
           Start Training
         </Link>
       </div>
