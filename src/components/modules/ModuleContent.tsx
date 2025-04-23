@@ -3,6 +3,14 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import { getAllModules, getNextModuleId, getPreviousModuleId } from '../../data/modules';
 import { useProgress } from '../../context/ProgressContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faArrowLeft, 
+  faArrowRight,
+  faCheckCircle,
+  faExclamationCircle,
+  faLightbulb
+} from '@fortawesome/free-solid-svg-icons';
 
 const ModuleContent: React.FC = () => {
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -46,35 +54,76 @@ const ModuleContent: React.FC = () => {
     },
   };
   
+  const parseExercise = (exercise: string) => {
+    const parts = exercise.split('\n\n');
+    const scenario = parts[0];
+    const tasks = parts.slice(1).filter(part => part.trim() !== '');
+    
+    return { scenario, tasks };
+  };
+  
+  const { scenario, tasks } = parseExercise(currentModule.exercise);
+  
   return (
     <div className="module-content">
-      <h2 className="module-title">{currentModule.title}</h2>
-      <div className="module-description">{currentModule.description}</div>
+      <div className="module-header">
+        <h2 className="module-title">{currentModule.title}</h2>
+        <div className="module-description">{currentModule.description}</div>
+      </div>
       
       <div className="video-container">
         <YouTube videoId={currentModule.videoId} opts={opts} />
       </div>
       
-      <h3>Exercise:</h3>
-      <div className="exercise-content">
-        {currentModule.exercise.split('\n\n').map((paragraph, index) => (
-          <p key={index} style={{ marginBottom: '15px', whiteSpace: 'pre-line' }}>{paragraph}</p>
-        ))}
+      <div className="exercise-container">
+        <div className="exercise-scenario">
+          <div className="scenario-icon">🎯</div>
+          <h3>Scenario</h3>
+          <p>{scenario}</p>
+        </div>
+
+        <div className="exercise-tasks">
+          <h3>Your Tasks</h3>
+          {tasks.map((task, index) => (
+            <div key={index} className="task-card">
+              <div className="task-number">{index + 1}</div>
+              <div className="task-content">
+                <p>{task}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="exercise-tips">
+          <h3>
+            <FontAwesomeIcon icon={faLightbulb} className="tip-icon" />
+            Pro Tips
+          </h3>
+          <ul>
+            <li>Watch the video carefully before starting the exercise</li>
+            <li>Take notes if needed</li>
+            <li>Complete all tasks in order</li>
+            <li>Verify your work before moving on</li>
+          </ul>
+        </div>
       </div>
       
       <div className="navigation-controls">
         {prevModuleId ? (
-          <Link to={`/module/${prevModuleId}`} className="nav-button">
-            Previous
+          <Link to={`/module/${prevModuleId}`} className="nav-button prev-button">
+            <FontAwesomeIcon icon={faArrowLeft} />
+            <span>Previous</span>
           </Link>
         ) : (
-          <Link to="/" className="nav-button">
-            Back to Introduction
+          <Link to="/" className="nav-button prev-button">
+            <FontAwesomeIcon icon={faArrowLeft} />
+            <span>Back to Introduction</span>
           </Link>
         )}
         
-        <button onClick={handleNext} className="nav-button">
-          {nextModuleId ? 'Next' : 'Complete Training'}
+        <button onClick={handleNext} className="nav-button next-button">
+          <span>{nextModuleId ? 'Next' : 'Complete Training'}</span>
+          <FontAwesomeIcon icon={faArrowRight} />
         </button>
       </div>
     </div>
