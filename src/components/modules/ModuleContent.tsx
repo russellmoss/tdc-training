@@ -7,8 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faArrowLeft, 
   faArrowRight,
-  faCheckCircle,
-  faExclamationCircle,
   faLightbulb
 } from '@fortawesome/free-solid-svg-icons';
 
