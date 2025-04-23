@@ -21,6 +21,11 @@ const ModuleContent: React.FC = () => {
   const nextModuleId = moduleId ? getNextModuleId(moduleId) : null;
   const prevModuleId = moduleId ? getPreviousModuleId(moduleId) : null;
   
+  // Scroll to top when module changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [moduleId]);
+  
   useEffect(() => {
     if (!currentModule) {
       navigate('/');
